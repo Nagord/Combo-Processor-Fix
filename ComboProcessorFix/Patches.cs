@@ -27,7 +27,7 @@ namespace ComboProcessorFix
             //Sets CD rate to appropriate power percent when not charging warp.
             if (inStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING)
             {
-                inStats.CyberDefenseRating += 0.375f * __instance.LevelMultiplier(0.75f, 1f) * (__instance.GetPowerPercentInput() / 0.5f);
+                inStats.CyberDefenseRating += 0.375f * __instance.LevelMultiplier(0.75f, 1f) * (__instance.GetPowerPercentInput() / 0.3125f);
                 return false;
             }
             return true;
