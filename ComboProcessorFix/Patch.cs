@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace Combo_Processor_Fix
+namespace ComboProcessorFix
 {
     [HarmonyPatch(typeof(PLCPU), "Tick")]
     class PowerPatch

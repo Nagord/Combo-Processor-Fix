@@ -1,13 +1,13 @@
 ﻿using PulsarModLoader.CustomGUI;
 using static UnityEngine.GUILayout;
 
-namespace Combo_Processor_Fix
+namespace ComboProcessorFix
 {
     class GUI : ModSettingsMenu
     {
         public override void Draw()
         {
-            if (Button("Combo Processor Fix " + (Mod.Enabled ? "Enabled" : "Disabled")))
+            if (Button($"{MyPluginInfo.USERS_PLUGIN_NAME} {(Mod.Enabled ? "Enabled" : "Disabled")}"))
             {
                 Mod.Enabled = !Mod.Enabled;
                 SyncModMessage.SendAllEnabledState();
@@ -22,9 +22,9 @@ namespace Combo_Processor_Fix
         {
             if (!PhotonNetwork.isMasterClient)
             {
-                return "Combo Processor Fix: " + ((Mod.HostEnabled && Mod.Enabled) ? "Enabled" : "Disabled");
+                return $"{MyPluginInfo.USERS_PLUGIN_NAME}: {((Mod.HostEnabled && Mod.Enabled) ? "Enabled" : "Disabled")}";
             }
-            return "Combo Processor Fix: " + (Mod.Enabled ? "Enabled" : "Disabled");
+            return $"{MyPluginInfo.USERS_PLUGIN_NAME}: {(Mod.Enabled ? "Enabled" : "Disabled")}";
         }
     }
 }

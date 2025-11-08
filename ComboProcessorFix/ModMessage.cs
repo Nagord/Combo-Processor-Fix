@@ -2,7 +2,7 @@
 using PulsarModLoader;
 using PulsarModLoader.MPModChecks;
 
-namespace Combo_Processor_Fix
+namespace ComboProcessorFix
 {
     internal class SyncModMessage : ModMessage
     {
@@ -19,9 +19,9 @@ namespace Combo_Processor_Fix
         {
             if (PhotonNetwork.isMasterClient)
             {
-                foreach (PhotonPlayer player in MPModCheckManager.Instance.NetworkedPeersWithMod(Mod.CachedHarmonyIdent))
+                foreach (PhotonPlayer player in MPModCheckManager.Instance.NetworkedPeersWithMod(MyPluginInfo.PLUGIN_GUID))
                 {
-                    SendRPC(Mod.CachedHarmonyIdent, Handle, player, new object[] { Mod.Enabled });
+                    SendRPC(MyPluginInfo.PLUGIN_GUID, Handle, player, new object[] { Mod.Enabled });
                 }
             }
         }
@@ -32,9 +32,9 @@ namespace Combo_Processor_Fix
     {
         static void Postfix(ref PhotonPlayer newPhotonPlayer)
         {
-            if (PhotonNetwork.isMasterClient && MPModCheckManager.Instance.NetworkedPeerHasMod(newPhotonPlayer, Mod.CachedHarmonyIdent))
+            if (PhotonNetwork.isMasterClient && MPModCheckManager.Instance.NetworkedPeerHasMod(newPhotonPlayer, MyPluginInfo.PLUGIN_GUID))
             {
-                ModMessage.SendRPC(Mod.CachedHarmonyIdent, SyncModMessage.Handle, newPhotonPlayer, new object[] { Mod.Enabled });
+                ModMessage.SendRPC(MyPluginInfo.PLUGIN_GUID, SyncModMessage.Handle, newPhotonPlayer, new object[] { Mod.Enabled });
             }
         }
     }

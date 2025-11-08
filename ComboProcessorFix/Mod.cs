@@ -1,21 +1,14 @@
 ﻿using PulsarModLoader;
 
-namespace Combo_Processor_Fix
+namespace ComboProcessorFix
 {
     public class Mod : PulsarMod
     {
-        public Mod()
-        {
-            CachedHarmonyIdent = HarmonyIdentifier();
-        }
+        public override string Version => MyPluginInfo.PLUGIN_VERSION;
 
-        public static string CachedHarmonyIdent;
+        public override string Author => MyPluginInfo.PLUGIN_AUTHORS;
 
-        public override string Version => "1.2.1";
-
-        public override string Author => "Dragon";
-
-        public override string Name => "Combo Processor Fix";
+        public override string Name => MyPluginInfo.USERS_PLUGIN_NAME;
 
 
         public static bool Enabled = true;
@@ -40,7 +33,7 @@ namespace Combo_Processor_Fix
 
         public override string HarmonyIdentifier()
         {
-            return $"{Author}.{Name}";
+            return MyPluginInfo.PLUGIN_GUID;
         }
     }
 }
