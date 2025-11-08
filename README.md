@@ -15,8 +15,8 @@ Requires: PulsarModLoader
 ### 💡 Function(s)
 
 - Adjusts combo processor to only consume power for jump processing when charging warp.
-- Can be enabled/disabled via F5 menu
-- Syncs host setting and displays state in F5 menu
+- Can be enabled/disabled via F5 menu.
+- Syncs host setting and displays state in F5 menu.
 
 
 ### 🎮 Client Usage
