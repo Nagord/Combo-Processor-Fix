@@ -3,8 +3,9 @@
 namespace ComboProcessorFix
 {
     [HarmonyPatch(typeof(PLCPU))]
-    class Patches()
+    class Patches
     {
+        //Sets JP power consumption to 2000 MW
         [HarmonyPatch("UpdateMaxPowerWattsForJP"), HarmonyPrefix]
         static bool JPPowerPatch(ref float __result)
         {
@@ -18,6 +19,9 @@ namespace ComboProcessorFix
             if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && (__instance.ShipStats == null || __instance.ShipStats.Ship == null || __instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING))
             {
                 ___m_RequestPowerUsage_Percent *= 0.3125f;
+
+                //Sets Combo processor power consumption to 4000 MW
+                __instance.m_MaxPowerUsage_Watts = 4000f;
             }
         }
 
