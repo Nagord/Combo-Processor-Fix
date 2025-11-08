@@ -14,7 +14,7 @@ namespace ComboProcessorFix
             //Reduces power consumption if not charging warp
             if (__instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING)
             {
-                ___m_RequestPowerUsage_Percent *= 0.5f;
+                ___m_RequestPowerUsage_Percent *= 0.3125f;
             }
         }
 
