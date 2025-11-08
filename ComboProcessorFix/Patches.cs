@@ -8,18 +8,26 @@ namespace ComboProcessorFix
         [HarmonyPatch("Tick"), HarmonyPostfix]
         static void PowerPatch(PLCPU __instance, ref float ___m_RequestPowerUsage_Percent)
         {
-            if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && (__instance.ShipStats == null || __instance.ShipStats.Ship == null || __instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING))
+            //Return early if Mod is disabled, Processor is not combo, stats are null.
+            if (!Mod.IsRunning || __instance.CPUClass != ECPUClass.COMBO || __instance.ShipStats == null || __instance.ShipStats.Ship == null) return;
+
+            //Reduces power consumption if not charging warp
+            if (__instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING)
             {
-                ___m_RequestPowerUsage_Percent *= 0.3125f;
+                ___m_RequestPowerUsage_Percent *= 0.5f;
             }
         }
 
         [HarmonyPatch("AddStats"), HarmonyPrefix]
         static bool ComboFunctionPatch(PLCPU __instance, PLShipStats inStats)
         {
-            if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && (inStats.Ship == null || inStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING))
+            //Stop early if mod disabled, processor not combo, stats are null.
+            if (!Mod.IsRunning || __instance.CPUClass != ECPUClass.COMBO || inStats.Ship == null) return true;
+
+            //Sets CD rate to appropriate power percent when not charging warp.
+            if (inStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING)
             {
-                inStats.CyberDefenseRating += 0.375f * __instance.LevelMultiplier(0.75f, 1f) * (__instance.GetPowerPercentInput() / 0.3125f);
+                inStats.CyberDefenseRating += 0.375f * __instance.LevelMultiplier(0.75f, 1f) * (__instance.GetPowerPercentInput() / 0.5f);
                 return false;
             }
             return true;
