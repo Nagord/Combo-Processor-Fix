@@ -2,22 +2,27 @@
 
 namespace ComboProcessorFix
 {
-    [HarmonyPatch(typeof(PLCPU), "Tick")]
-    class PowerPatch
+    [HarmonyPatch(typeof(PLCPU))]
+    class Patches()
     {
-        static void Postfix(PLCPU __instance, ref float ___m_RequestPowerUsage_Percent)
+        [HarmonyPatch("UpdateMaxPowerWattsForJP"), HarmonyPrefix]
+        static bool JPPowerPatch(ref float __result)
+        {
+            __result = 2000f;
+            return false;
+        }
+
+        [HarmonyPatch("Tick"), HarmonyPostfix]
+        static void PowerPatch(PLCPU __instance, ref float ___m_RequestPowerUsage_Percent)
         {
             if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && (__instance.ShipStats == null || __instance.ShipStats.Ship == null || __instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING))
             {
                 ___m_RequestPowerUsage_Percent *= 0.3125f;
             }
         }
-    }
 
-    [HarmonyPatch(typeof(PLCPU), "AddStats")]
-    class FunctionPatch
-    {
-        static bool Prefix(PLCPU __instance, PLShipStats inStats)
+        [HarmonyPatch("AddStats"), HarmonyPrefix]
+        static bool ComboFunctionPatch(PLCPU __instance, PLShipStats inStats)
         {
             if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && (inStats.Ship == null || inStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING))
             {
@@ -26,12 +31,9 @@ namespace ComboProcessorFix
             }
             return true;
         }
-    }
 
-    [HarmonyPatch(typeof(PLCPU), "ShowValueWithPowerLevelApplied")]
-    class StatLinePatchJP
-    {
-        static bool Prefix(PLCPU __instance, float value, ref string __result)
+        [HarmonyPatch("ShowValueWithPowerLevelApplied"), HarmonyPrefix]
+        static bool ComboJPStatLinePatch(PLCPU __instance, float value, ref string __result)
         {
             if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && __instance.ShipStats != null && __instance.ShipStats.Ship != null && __instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING && !__instance.ShipStats.isPreview && !__instance.InCargoSlot())
             {
@@ -41,11 +43,9 @@ namespace ComboProcessorFix
             }
             return true;
         }
-    }
-    [HarmonyPatch(typeof(PLCPU), "ShowValueWithPowerLevelApplied_Decimal")]
-    class StatLinePatchCD
-    {
-        static bool Prefix(PLCPU __instance, float value, ref string __result)
+
+        [HarmonyPatch("ShowValueWithPowerLevelApplied_Decimal"), HarmonyPrefix]
+        static bool ComboCDStatLinePatch(PLCPU __instance, float value, ref string __result)
         {
             if (Mod.IsRunning && __instance.CPUClass == ECPUClass.COMBO && __instance.ShipStats != null && __instance.ShipStats.Ship != null && __instance.ShipStats.Ship.WarpChargeStage != EWarpChargeStage.E_WCS_PREPPING && !__instance.ShipStats.isPreview && !__instance.InCargoSlot())
             {
