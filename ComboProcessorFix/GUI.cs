@@ -20,11 +20,7 @@ namespace ComboProcessorFix
 
         public override string Name()
         {
-            if (!PhotonNetwork.isMasterClient)
-            {
-                return $"{MyPluginInfo.USERS_PLUGIN_NAME}: {((Mod.HostEnabled && Mod.Enabled) ? "Enabled" : "Disabled")}";
-            }
-            return $"{MyPluginInfo.USERS_PLUGIN_NAME}: {(Mod.Enabled ? "Enabled" : "Disabled")}";
+            return $"{MyPluginInfo.USERS_PLUGIN_NAME}: {(Mod.IsRunning ? "Enabled" : "Disabled")}";
         }
     }
 }

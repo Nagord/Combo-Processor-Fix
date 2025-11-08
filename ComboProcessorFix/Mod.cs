@@ -10,7 +10,7 @@ namespace ComboProcessorFix
 
         public override string Name => MyPluginInfo.USERS_PLUGIN_NAME;
 
-
+        public static bool IsRunning => Enabled && (PhotonNetwork.isMasterClient || HostEnabled);
         public static bool Enabled = true;
         public static bool HostEnabled = false;
 
